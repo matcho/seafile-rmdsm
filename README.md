@@ -3,7 +3,7 @@
 
 ## about
 
-A CLI program to retrieve single files from Seafile, using Seafile HTTP API
+A CLI program for non-interactive retrieval of files and folders from Seafile, using Seafile HTTP API
 
 ## install
 
@@ -21,15 +21,15 @@ npm install
 
 Download a single file:
 ```sh
-./seafile-rmdsm -h https://lab.plantnet.org/seafile -u mathias.chouet@inria.fr -f https://lab.plantnet.org/seafile/lib/e8092829-fee6-49f1-b31f-433e96576267/file/manif-sandwich.jpg
+./seafile-rmdsm -h https://lab.plantnet.org/seafile -u random.guy@inria.fr -f https://lab.plantnet.org/seafile/lib/e8092829-fee6-49f1-b31f-433e96576267/file/manif-sandwich.jpg
 ```
 
 Download a single directory:
 ```sh
-./seafile-rmdsm -h https://lab.plantnet.org/seafile -u herve.goeau@inria.fr -p 12345 -d https://lab.plantnet.org/seafile/library/b89cd242-2c7b-448b-af53-e862ab75ef64/ImageDatasets/Quadrats/CBNMedQuadrats
+./seafile-rmdsm -h https://lab.plantnet.org/seafile -u random.guy@inria.fr -p 12345 -d https://lab.plantnet.org/seafile/library/b89cd242-2c7b-448b-af53-e862ab75ef64/ImageDatasets/Quadrats/CBNMedQuadrats
 ```
 
 Download a list of files:
 ```sh
-./seafile-rmdsm -h https://lab.plantnet.org/seafile -u mathias.chouet@inria.fr -l ./files-list.txt -o ~/Downloads/seafile/foo
+./seafile-rmdsm -h https://lab.plantnet.org/seafile -u random.guy@inria.fr -l ./files-list.txt -o ~/Downloads/seafile/foo
 ```
