@@ -51,9 +51,9 @@ function usage() {
     console.log(`usage: ./seafile-rmdsm -h seafile_root_URL -u username [-p password] ([-f file_URL_or_path] | [-d directory_URL_or_path] | [-l list_of_file_URLs.txt])
 
 examples:
-    ./seafile-rmdsm -h https://lab.plantnet.org/seafile -u mathias.chouet@inria.fr -f https://lab.plantnet.org/seafile/lib/e8092829-fee6-49f1-b31f-433e96576267/file/manif-sandwich.jpg
-    ./seafile-rmdsm -h https://lab.plantnet.org/seafile -u herve.goeau@inria.fr -p 12345 -d https://lab.plantnet.org/seafile/library/b89cd242-2c7b-448b-af53-e862ab75ef64/ImageDatasets/Quadrats/CBNMedQuadrats
-    ./seafile-rmdsm -h https://lab.plantnet.org/seafile -u mathias.chouet@inria.fr -l ./files-list.txt -o ~/Downloads/seafile/foo
+    ./seafile-rmdsm.js -h https://lab.plantnet.org/seafile -u random.guy@inria.fr -f https://lab.plantnet.org/seafile/lib/e8092829-fee6-49f1-b31f-433e96576267/file/manif-sandwich.jpg
+    ./seafile-rmdsm.js -h https://lab.plantnet.org/seafile -u random.guy@inria.fr -p 12345 -d https://lab.plantnet.org/seafile/library/b89cd242-2c7b-448b-af53-e862ab75ef64/ImageDatasets/Quadrats/CBNMedQuadrats
+    ./seafile-rmdsm.js -h https://lab.plantnet.org/seafile -u random.guy@inria.fr -l ./files-list.txt -o ~/Downloads/seafile/foo
 `);
 }
 
