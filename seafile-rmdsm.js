@@ -51,11 +51,32 @@ function usage() {
     console.log(`usage: ./seafile-rmdsm -h seafile_root_URL -u username [-p password] ([-f file_URL_or_path] | [-d directory_URL_or_path] | [-l list_of_file_URLs.txt])
 
 examples:
-    ./seafile-rmdsm.js -h https://lab.plantnet.org/seafile -u random.guy@inria.fr -f https://lab.plantnet.org/seafile/lib/e8092829-fee6-49f1-b31f-433e96576267/file/manif-sandwich.jpg
-    ./seafile-rmdsm.js -h https://lab.plantnet.org/seafile -u random.guy@inria.fr -p 12345 -d https://lab.plantnet.org/seafile/library/b89cd242-2c7b-448b-af53-e862ab75ef64/ImageDatasets/Quadrats/CBNMedQuadrats
+    ./seafile-rmdsm.js -u random.guy@inria.fr -f https://lab.plantnet.org/seafile/lib/e8092829-fee6-49f1-b31f-433e96576267/file/manif-sandwich.jpg
+    ./seafile-rmdsm.js -h https://lab.plantnet.org/seafile -u random.guy@inria.fr -f lib/e8092829-fee6-49f1-b31f-433e96576267/file/manif-sandwich.jpg
+    ./seafile-rmdsm.js -u random.guy@inria.fr -p 12345 -d https://lab.plantnet.org/seafile/library/b89cd242-2c7b-448b-af53-e862ab75ef64/ImageDatasets/Quadrats/CBNMedQuadrats
     ./seafile-rmdsm.js -h https://lab.plantnet.org/seafile -u random.guy@inria.fr -l ./files-list.txt -o ~/Downloads/seafile/foo
 `);
 }
+
+// detect host
+if (! options.host) {
+    const urlToParse = options.file || options.directory || null;
+    if (urlToParse) {
+        const regexp = new RegExp('^(.+)?\/?lib(rary)?\/.+$');
+        const matches = urlToParse.match(regexp);
+        if (!matches || matches.length < 3) {
+            throw new Error('could not parse host from URL');
+        }
+        options.host = matches[1];
+        // console.log(`detected host [${options.host}]`);
+    }
+    if (! options.host) {
+        usage(); 
+        process.exit(5);
+    }
+}
+// remove trailing slash if any
+options.host = options.host.replace(/\/$/, '');
 
 // ask for password
 const prompt = createPrompt({});
@@ -63,8 +84,6 @@ if (!options.password) {
     options.password = prompt.hide('password: ');
 }
 
-// remove trailing slash if any
-options.host = options.host.replace(/\/$/, '');
 const api2URL = options.host + '/api2';
 const apiv21URL = options.host + '/api/v2.1';
 
@@ -109,14 +128,14 @@ async function downloadSingleFile(url, token) {
     // url = 'lib/e8092829-fee6-49f1-b31f-433e96576267/file/manif-sandwich.jpg';
     // console.log('URL', url);
 
-    const regexp = new RegExp('^(' + options.host.replace(/\//g, '\/').replace(/\./g, '\.') + ')?\/?lib\/([^\/]+)\/file\/(.+)$');
+    const regexp = new RegExp('^(' + options.host.replace(/\//g, '\/').replace(/\./g, '\.') + ')?\/?lib(rary)?\/([^\/]+)\/file\/(.+)$');
     const matches = url.match(regexp);
     // console.log('matches', matches.length, matches);
-    if (matches.length < 4) {
+    if (!matches || matches.length < 5) {
         throw new Error('could not parse single file URL');
     }
-    const repoId = matches[2];
-    const filePath = matches[3];
+    const repoId = matches[3];
+    const filePath = matches[4];
     // console.log(`downloading file [${filePath}] from library [${repoId}]`);
 
     // get one-time direct download URL
@@ -158,7 +177,6 @@ async function downloadDirectory(url, token) {
 
     const regexp = new RegExp('^(' + options.host.replace(/\//g, '\/').replace(/\./g, '\.') + ')?\/?lib(rary)?\/([^\/]+)\/[^\/]+(\/.+?)?\/([^\/]+)$');
     const matches = url.match(regexp);
-    // console.log('matches', matches.length, matches);
     if (!matches || matches.length < 6) {
         throw new Error('could not parse directory URL');
     }
@@ -166,9 +184,6 @@ async function downloadDirectory(url, token) {
     const parentDir = decodeURIComponent(matches[4]) || '/';
     const dirName = decodeURIComponent(matches[5]);
     console.log(`downloading directory [${dirName}] from library [${repoId}]`);
-
-    // console.log('parent dir', parentDir);
-    // console.log('dir name', dirName);
 
     // trigger zip task and get zip progress token
     const fileLinkURL = apiv21URL + '/repos/' + repoId + '/zip-task/';
@@ -188,8 +203,6 @@ async function downloadDirectory(url, token) {
     );
     const zipToken = data.zip_token;
     // console.log('zip token', zipToken);
-
-    // process.exit(6);
 
     // wait for zip task to be done
     let zipTaskDone = false;
