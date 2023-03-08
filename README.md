@@ -14,7 +14,7 @@ npm install
 ## usage
 
 ```sh
-./seafile-rmdsm.js -h seafile_root_URL -u username [-p password] ([-f file_URL_or_path] | [-d directory_URL_or_path] | [-l list_of_file_URLs.txt])
+./seafile-rmdsm.js [-h seafile_root_URL] [-u username] [-p password] ([-f file_URL_or_path] | [-d directory_URL_or_path] | [-l list_of_file_URLs.txt])
 ```
 
 ## examples

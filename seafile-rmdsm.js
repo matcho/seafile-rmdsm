@@ -48,7 +48,7 @@ if (options.output) {
 }
 
 function usage() {
-    console.log(`usage: ./seafile-rmdsm -h seafile_root_URL -u username [-p password] ([-f file_URL_or_path] | [-d directory_URL_or_path] | [-l list_of_file_URLs.txt])
+    console.log(`usage: ./seafile-rmdsm.js [-h seafile_root_URL] [-u username] [-p password] ([-f file_URL_or_path] | [-d directory_URL_or_path] | [-l list_of_file_URLs.txt])
 
 examples:
     ./seafile-rmdsm.js -u random.guy@inria.fr -f https://lab.plantnet.org/seafile/lib/e8092829-fee6-49f1-b31f-433e96576267/file/manif-sandwich.jpg
