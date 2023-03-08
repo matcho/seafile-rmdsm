@@ -28,7 +28,7 @@ const options = getopts(process.argv.slice(2), {
     string: ["h", "u", "p", "f", "d", "l", "o"]
 });
 
-if (!options.username || (!options.file && !options.directory && !options.list)) {
+if (!options.file && !options.directory && !options.list) {
     usage();
     process.exit(1);
 }
@@ -78,8 +78,13 @@ if (! options.host) {
 // remove trailing slash if any
 options.host = options.host.replace(/\/$/, '');
 
-// ask for password
+// ask for username
 const prompt = createPrompt({});
+if (!options.username) {
+    options.username = prompt('username (email address): ');
+}
+
+// ask for password
 if (!options.password) {
     options.password = prompt.hide('password: ');
 }
